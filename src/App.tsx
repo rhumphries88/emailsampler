@@ -349,19 +349,21 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="w-full md:w-2/3 p-6">
-        <div className="mb-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">Messages</h2>
-          <div className="flex space-x-2">
+      <div className="w-full md:w-2/3 p-8 overflow-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-gray-800">Messages ({messages.length})</h2>
+          <div className="flex gap-2">
             <button
               onClick={() => setSortBy('latest')}
-              className={`px-3 py-1 rounded-md text-sm ${sortBy === 'latest' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200
+                ${sortBy === 'latest' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
             >
               Latest
             </button>
             <button
               onClick={() => setSortBy('likes')}
-              className={`px-3 py-1 rounded-md text-sm ${sortBy === 'likes' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'}`}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200
+                ${sortBy === 'likes' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
             >
               Most Liked
             </button>
@@ -379,39 +381,55 @@ function App() {
             <p className="text-gray-500">Be the first to share your thoughts!</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {sortedMessages.map((message) => (
-              <div key={message.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className={`${message.color} h-2`}></div>
-                <div className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-900">{message.name}</h3>
-                      <p className="text-sm text-gray-500">{message.company} • {message.email}</p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleLike(message.id)}
-                        className="text-pink-500 hover:text-pink-700 flex items-center"
-                        title="Like this message"
-                      >
-                        <Heart size={16} className="mr-1" />
-                        <span className="text-xs">{message.likes}</span>
-                      </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {sortedMessages.map((message, index) => (
+              <div
+                key={message.id}
+                className={`
+                  ${message.color} chat-bubble rounded-2xl p-6 
+                  transform hover:scale-105 transition-all duration-300 
+                  shadow-lg group
+                  animate-float animate-pulse-slow
+                `}
+                style={{ 
+                  minHeight: `${100 + message.likes}px`,
+                  animationDelay: `${index * 0.2}s`
+                }}
+              >
+                <div className="flex items-start space-x-2 relative z-10">
+                  <MessageCircle className="w-6 h-6 text-white" />
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-bold text-white text-lg">{message.name}</h3>
+                        <p className="text-sm text-white/90 font-medium">{message.company}</p>
+                        <div className="flex items-center mt-1 space-x-1">
+                          <Mail className="w-4 h-4 text-white/80" />
+                          <p className="text-sm text-white/90 font-medium break-all">{message.email}</p>
+                        </div>
+                      </div>
                       <button
                         onClick={() => handleDelete(message.id)}
-                        className="text-gray-400 hover:text-gray-600"
-                        title="Delete this message"
+                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-white/80 hover:text-white"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  </div>
-                  <div className="mt-3 text-gray-700 whitespace-pre-wrap font-mono text-sm">
-                    {formatMessage(message.body)}
-                  </div>
-                  <div className="mt-2 text-xs text-gray-400">
-                    {new Date(message.timestamp).toLocaleString()}
+                    <p className="mt-2 text-white font-medium whitespace-pre-wrap font-mono">
+                      {formatMessage(message.body)}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <button
+                        onClick={() => handleLike(message.id)}
+                        className="flex items-center space-x-2 bg-white/20 px-3 py-1 rounded-full text-white font-medium hover:bg-white/30 transition-colors duration-200"
+                      >
+                        <Heart className="w-4 h-4" />
+                        <span>{message.likes}</span>
+                      </button>
+                      <span className="text-sm text-white/80">
+                        {new Date(message.timestamp).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
