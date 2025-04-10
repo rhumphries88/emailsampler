@@ -15,6 +15,14 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),
         secure: false
       }
+    },
+    fs: {
+      // Allow serving files from one level up to the project root
+      allow: ['..']
+    },
+    headers: {
+      // Set proper MIME types for JavaScript modules
+      'Content-Type': 'application/javascript'
     }
   },
   build: {
@@ -23,5 +31,9 @@ export default defineConfig({
         manualChunks: undefined
       }
     }
+  },
+  resolve: {
+    // Add .js extensions for proper module resolution
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
   }
 });

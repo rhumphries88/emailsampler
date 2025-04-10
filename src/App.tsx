@@ -259,7 +259,7 @@ function App() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6">Share Your Thoughts</h2>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name *</label>
+            <label className="block text-sm font-medium text-gray-700">Your Name *</label>
             <input
               type="text"
               value={formData.name}
@@ -270,7 +270,7 @@ function App() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Company *</label>
+            <label className="block text-sm font-medium text-gray-700">Your Company *</label>
             <input
               type="text"
               value={formData.company}
@@ -281,7 +281,7 @@ function App() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email *</label>
+            <label className="block text-sm font-medium text-gray-700">Your Email *</label>
             <input
               type="email"
               value={formData.email}
